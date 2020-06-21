@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -192,6 +193,19 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f875a6a49c51d64c842b07ed60b16ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2034053346}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -8656,6 +8670,7 @@ GameObject:
   - component: {fileID: 2034053344}
   - component: {fileID: 2034053343}
   - component: {fileID: 2034053347}
+  - component: {fileID: 2034053348}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -8709,7 +8724,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &2034053345
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8786,3 +8801,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9fddfc558b2d64eb7f21349a658782, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 2034053344}
+  anim: {fileID: 2034053348}
+--- !u!95 &2034053348
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034053342}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f536a0b37a7f3ed49bb4be464291c2c9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
