@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private Collider2D coll;
 
-    public int Pisang = 0;
+    
     public int Lollipop = 0;
     
     private enum Status {diam, berlari, melompat, jatuh}
@@ -17,6 +19,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private LayerMask ground;
     [SerializeField]private float speed = 3f;
     [SerializeField]private float jumpforce = 5f;
+    [SerializeField]private int Pisang = 0;
+    [SerializeField]private TextMeshProUGUI sehatText;
 
     void Start()
     {
@@ -38,6 +42,7 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(collision.gameObject);
             Pisang += 1;
+            sehatText.text = Pisang.ToString();
         }
 
         if(collision.tag == "Tidak Sehat")
