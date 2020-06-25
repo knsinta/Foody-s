@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private Collider2D coll;
+    // private AudioSource suaraKaki;
+    [SerializeField]private AudioSource nabrak, suaraKaki;
 
     
     // public int Lollipop = 0;
@@ -28,6 +30,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
+        // suaraKaki = GetComponent<AudioSource>();
+        // nabrak = GetComponent<AudioSource>();
     }
 
     private void Update() 
@@ -48,14 +52,24 @@ public class PlayerController : MonoBehaviour
             Pisang += 1;
             sehatText.text = Pisang.ToString();
         }
+
+        if(sehat.tag == "PowerUp")
+        {
+            Destroy(sehat.gameObject);
+            jumpforce = 15f;
+            GetComponent<SpriteRenderer>().color = Color.yellow;
+            StartCoroutine(ResetPower());
+        }
     }
     private void OnCollisionEnter2D(Collision2D tdksehat)
     {
         if(tdksehat.gameObject.tag == "Tidak Sehat")
         {
             Destroy(tdksehat.gameObject);
+            
             // Jump();
             status = Status.sakit;
+            nabrak.Play();
             if(tdksehat.gameObject.transform.position.x > transform.position.x)
             {
                 rb.velocity = new Vector2(-hurtforce, rb.velocity.y);
@@ -77,8 +91,7 @@ public class PlayerController : MonoBehaviour
             
             // Lollipop -=1; 
     }
-        
-    
+           
     private void Movement()
     {
     float hDirection = Input.GetAxis("Horizontal");
@@ -87,6 +100,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
             transform.localScale = new Vector2(-1, 1);
+            // suaraKaki.Play();
             // anim.SetBool("berlari", true);
         }  
 
@@ -94,6 +108,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(speed, rb.velocity.y);
             transform.localScale = new Vector2(1, 1);
+            // suaraKaki.Play();
             // anim.SetBool("berlari", true);
         }
 
@@ -144,4 +159,15 @@ public class PlayerController : MonoBehaviour
             status = Status.diam;
         }
     }
+
+    private IEnumerator ResetPower()
+    {
+        yield return new WaitForSeconds(5);
+        jumpforce = 10;
+        GetComponent<SpriteRenderer>().color = Color.white;
+    }
+    // private void SuaraKaki()
+    // {
+    //     suaraKaki.Play();
+    // }
 }

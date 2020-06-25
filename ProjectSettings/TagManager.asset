@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Collectable
   - Sehat
   - Tidak Sehat
+  - PowerUp
   layers:
   - Default
   - TransparentFX
