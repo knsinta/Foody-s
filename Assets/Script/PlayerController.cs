@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,12 +25,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private int Pisang = 0;
     [SerializeField]private TextMeshProUGUI sehatText;
     [SerializeField]private float hurtforce = 5f;
+    [SerializeField]private int health;
+    [SerializeField]private TextMeshProUGUI nyawaText;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
+        nyawaText.text = health.ToString();
         // suaraKaki = GetComponent<AudioSource>();
         // nabrak = GetComponent<AudioSource>();
     }
@@ -69,6 +73,7 @@ public class PlayerController : MonoBehaviour
             
             // Jump();
             status = Status.sakit;
+            PengaturNyawa();
             nabrak.Play();
             if(tdksehat.gameObject.transform.position.x > transform.position.x)
             {
@@ -91,7 +96,16 @@ public class PlayerController : MonoBehaviour
             
             // Lollipop -=1; 
     }
-           
+
+    private void PengaturNyawa()
+    {
+        health -=1;
+        nyawaText.text = health.ToString();
+        if(health <= 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }       
     private void Movement()
     {
     float hDirection = Input.GetAxis("Horizontal");
