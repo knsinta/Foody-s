@@ -11,12 +11,12 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private Collider2D coll;
     // private AudioSource suaraKaki;
-    [SerializeField]private AudioSource nabrak, suaraKaki;
+    [SerializeField]private AudioSource nabrak, dapet, lompat, super;
 
     
     // public int Lollipop = 0;
     
-    private enum Status {diam, berlari, melompat, jatuh, sakit}
+    private enum Status {diam, berlari, melompat, jatuh, sakit, mati}
     private Status status = Status.diam;
     
     [SerializeField]private LayerMask ground;
@@ -25,15 +25,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private int Pisang = 0;
     [SerializeField]private TextMeshProUGUI sehatText;
     [SerializeField]private float hurtforce = 5f;
-    [SerializeField]private int health;
+    [SerializeField]private int health = 4;
+    public int currentHealth;
+    public int maxHealth = 4;
     [SerializeField]private TextMeshProUGUI nyawaText;
+    public healthBar healthBar;
 
+    // Vector3 posisiAwal;
+    // public void UpdatePosisi(Vector3 Posisi) {
+    //     posisiAwal = Posisi;
+    // }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
         nyawaText.text = health.ToString();
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+        // posisiAwal = transform.position;
         // suaraKaki = GetComponent<AudioSource>();
         // nabrak = GetComponent<AudioSource>();
     }
@@ -54,13 +64,16 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(sehat.gameObject);
             Pisang += 1;
+            dapet.Play();
             sehatText.text = Pisang.ToString();
         }
 
         if(sehat.tag == "PowerUp")
         {
             Destroy(sehat.gameObject);
+            super.Play();
             jumpforce = 15f;
+            speed = 10f;
             GetComponent<SpriteRenderer>().color = Color.yellow;
             StartCoroutine(ResetPower());
         }
@@ -100,10 +113,15 @@ public class PlayerController : MonoBehaviour
     private void PengaturNyawa()
     {
         health -=1;
+        currentHealth -= 1;
+        healthBar.SetHealth(currentHealth);
         nyawaText.text = health.ToString();
         if(health <= 0)
         {
+            // status = Status.mati;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            // transform.position = posisiAwal;
+            // rb.velocity = new Vector2(0f, 0f);
         }
     }       
     private void Movement()
@@ -114,7 +132,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
             transform.localScale = new Vector2(-1, 1);
-            // suaraKaki.Play();
+            // langkah.Play();
             // anim.SetBool("berlari", true);
         }  
 
@@ -135,7 +153,8 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpforce);
-            status = Status.melompat;
+        status = Status.melompat;
+        lompat.Play();
     }
     private void KecepatanStatus()
     {
@@ -176,8 +195,9 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator ResetPower()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(7);
         jumpforce = 10;
+        speed = 5;
         GetComponent<SpriteRenderer>().color = Color.white;
     }
     // private void SuaraKaki()
