@@ -10,15 +10,11 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private Collider2D coll;
-    // private AudioSource suaraKaki;
-    [SerializeField]private AudioSource nabrak, dapet, lompat, super;
-
-    
-    // public int Lollipop = 0;
     
     private enum Status {diam, berlari, melompat, jatuh, sakit, mati}
     private Status status = Status.diam;
-    
+
+    [SerializeField]private AudioSource nabrak, dapet, lompat, super, cek;
     [SerializeField]private LayerMask ground;
     [SerializeField]private float speed = 3f;
     [SerializeField]private float jumpforce = 5f;
@@ -26,17 +22,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private TextMeshProUGUI sehatText;
     [SerializeField]private float hurtforce = 5f;
     [SerializeField]private int health = 4;
+    [SerializeField]private TextMeshProUGUI nyawaText;
+
     public int currentHealth;
     public int maxHealth = 4;
-    [SerializeField]private TextMeshProUGUI nyawaText;
     public healthBar healthBar;
-
+    public Vector3 responPoin;
     public bool tombolKiri, tombolKanan;
 
-    // Vector3 posisiAwal;
-    // public void UpdatePosisi(Vector3 Posisi) {
-    //     posisiAwal = Posisi;
-    // }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -45,9 +38,7 @@ public class PlayerController : MonoBehaviour
         nyawaText.text = health.ToString();
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-        // posisiAwal = transform.position;
-        // suaraKaki = GetComponent<AudioSource>();
-        // nabrak = GetComponent<AudioSource>();
+        responPoin = transform.position;
     }
 
     private void Update() 
@@ -79,14 +70,25 @@ public class PlayerController : MonoBehaviour
             GetComponent<SpriteRenderer>().color = Color.yellow;
             StartCoroutine(ResetPower());
         }
+        
+        if(sehat.tag == "Sensor Terjun")
+        {
+            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            transform.position = responPoin;
+            PengaturNyawa();
+        }
+
+        if(sehat.tag == "Cek Poin")
+        {
+            cek.Play();
+            responPoin = sehat.transform.position;
+        }
     }
     private void OnCollisionEnter2D(Collision2D tdksehat)
     {
         if(tdksehat.gameObject.tag == "Tidak Sehat")
         {
             Destroy(tdksehat.gameObject);
-            
-            // Jump();
             status = Status.sakit;
             PengaturNyawa();
             nabrak.Play();
@@ -98,18 +100,7 @@ public class PlayerController : MonoBehaviour
             {
                 rb.velocity = new Vector2(hurtforce, rb.velocity.y);
             }
-            // if(status == Status.jatuh)
-            // {
-                
-            //     
-            // }
-        }
-
-        // else
-        // {
-            
-            
-            // Lollipop -=1; 
+        } 
     }
 
     private void PengaturNyawa()
@@ -120,10 +111,10 @@ public class PlayerController : MonoBehaviour
         nyawaText.text = health.ToString();
         if(health <= 0)
         {
+            
             status = Status.mati;
+            // mati();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            // transform.position = posisiAwal;
-            // rb.velocity = new Vector2(0f, 0f);
         }
     }       
     private void Movement()
@@ -134,16 +125,12 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
             transform.localScale = new Vector2(-1, 1);
-            // langkah.Play();
-            // anim.SetBool("berlari", true);
         }  
 
         else if(hDirection > 0 || (tombolKanan==true)) 
         {
             rb.velocity = new Vector2(speed, rb.velocity.y);
             transform.localScale = new Vector2(1, 1);
-            // suaraKaki.Play();
-            // anim.SetBool("berlari", true);
         }
 
         if(Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
@@ -202,9 +189,12 @@ public class PlayerController : MonoBehaviour
         speed = 5;
         GetComponent<SpriteRenderer>().color = Color.white;
     }
-    // private void SuaraKaki()
+
+    // private IEnumerator mati()
     // {
-    //     suaraKaki.Play();
+    //     yield return new WaitForSeconds(3);
+    //     // status = Status.mati;
+    //     // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     // }
 
     public void tekanKiri()

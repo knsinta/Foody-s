@@ -8,6 +8,8 @@ TagManager:
   - Tidak Sehat
   - PowerUp
   - BGMusic
+  - Cek Poin
+  - Sensor Terjun
   layers:
   - Default
   - TransparentFX
