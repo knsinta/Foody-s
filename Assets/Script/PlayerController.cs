@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private TextMeshProUGUI nyawaText;
     public healthBar healthBar;
 
+    public bool tombolKiri, tombolKanan;
+
     // Vector3 posisiAwal;
     // public void UpdatePosisi(Vector3 Posisi) {
     //     posisiAwal = Posisi;
@@ -118,7 +120,7 @@ public class PlayerController : MonoBehaviour
         nyawaText.text = health.ToString();
         if(health <= 0)
         {
-            // status = Status.mati;
+            status = Status.mati;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             // transform.position = posisiAwal;
             // rb.velocity = new Vector2(0f, 0f);
@@ -128,7 +130,7 @@ public class PlayerController : MonoBehaviour
     {
     float hDirection = Input.GetAxis("Horizontal");
 
-        if(hDirection < 0) 
+        if(hDirection < 0 || (tombolKiri==true)) 
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
             transform.localScale = new Vector2(-1, 1);
@@ -136,7 +138,7 @@ public class PlayerController : MonoBehaviour
             // anim.SetBool("berlari", true);
         }  
 
-        else if(hDirection > 0) 
+        else if(hDirection > 0 || (tombolKanan==true)) 
         {
             rb.velocity = new Vector2(speed, rb.velocity.y);
             transform.localScale = new Vector2(1, 1);
@@ -204,4 +206,29 @@ public class PlayerController : MonoBehaviour
     // {
     //     suaraKaki.Play();
     // }
+
+    public void tekanKiri()
+    {
+        tombolKiri = true;
+    }
+    public void lepasKiri()
+    {
+        tombolKiri = false;
+    }
+    public void tekanKanan()
+    {
+        tombolKanan = true;
+    }
+    public void lepasKanan()
+    {
+        tombolKanan = false;
+    }
+
+    public void loncat()
+    {
+        if(coll.IsTouchingLayers(ground))
+        {
+            Jump();
+        }
+    }
 }

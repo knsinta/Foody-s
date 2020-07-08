@@ -23,4 +23,7 @@ public class OptionsScript : MonoBehaviour
         audioMixer.SetFloat("Volume", volume);
         musicVolume = volume;
     }
+    private void Awake() {
+        DontDestroyOnLoad(this.gameObject);
+    }
 }

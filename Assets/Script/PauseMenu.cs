@@ -47,6 +47,7 @@ public class PauseMenu : MonoBehaviour
     public void LoadMenu()
     {
         Time.timeScale = 1f;
+        Destroy(GameObject.FindGameObjectWithTag("BGMusic"));
         SceneManager.LoadScene("MenuScene");
     }
 
@@ -61,6 +62,12 @@ public class PauseMenu : MonoBehaviour
                 Pause();
             }
     }
+
+    // public void NextLevel()
+    // {
+    //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    // }
+
 
     // public void Settings()
     // {
