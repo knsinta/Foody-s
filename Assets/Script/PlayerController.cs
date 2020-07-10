@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private LayerMask ground;
     [SerializeField]private float speed = 3f;
     [SerializeField]private float jumpforce = 5f;
-    [SerializeField]private int Pisang = 0;
+    [SerializeField]private int Skor = 0;
     [SerializeField]private TextMeshProUGUI sehatText;
     [SerializeField]private float hurtforce = 5f;
     [SerializeField]private int health = 4;
@@ -56,9 +56,13 @@ public class PlayerController : MonoBehaviour
         if(sehat.tag == "Sehat")
         {
             Destroy(sehat.gameObject);
-            Pisang += 1;
+            Skor += 1;
+            // int scor = Skor;
+            // Skor = (int.Parse(sehatText.text) + 1);
             dapet.Play();
-            sehatText.text = Pisang.ToString();
+            sehatText.text = Skor.ToString();
+            // int sehat1 = Skor;
+            // PlayerPrefs.SetInt("Skor", sehat1);
         }
 
         if(sehat.tag == "PowerUp")
@@ -82,6 +86,11 @@ public class PlayerController : MonoBehaviour
         {
             cek.Play();
             responPoin = sehat.transform.position;
+        }
+
+        if(sehat.tag == "Rumah")
+        {
+            LevelComplete.instance.ShowLevelDialog("Level Complete", sehatText.text);
         }
     }
     private void OnCollisionEnter2D(Collision2D tdksehat)
@@ -113,8 +122,9 @@ public class PlayerController : MonoBehaviour
         {
             
             status = Status.mati;
+            LevelComplete.instance.ShowLevelDialog("Level Fail", sehatText.text);
             // mati();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }       
     private void Movement()
